@@ -9,18 +9,25 @@ export abstract class AbstractStripeService {
   protected constructor() {
     this.stripe = new Stripe(process.env.STRIPE_API_KEY);
   }
-  private async getExchangeRate() {
+  private async getExchangeRate(amountInEuro: number) {
     try {
       const response = await fetch(ApiConfig.exchangeApi);
       const data = await response.json();
-      return data.conversion_rates.USD;
+
+      if (response.ok) {
+        const usdRate = data.conversion_rates.USD;
+        const amountInUSD = amountInEuro * usdRate;
+        console.log(`${amountInEuro} EUR = ${amountInUSD.toFixed(2)} USD`);
+        return amountInUSD;
+      } else {
+        console.error('Erreur lors de la récupération des taux de change:', data.error);
+      }
     } catch (error) {
-      console.error('Erreur lors de la récupération du taux de change:', error);
-      return null;
+      console.error('Erreur lors de la requête à l\'API:', error);
     }
   }
   protected async convertEURtoUSD(amountInEUR: number) {
-    const exchangeRate = await this.getExchangeRate();
-    return exchangeRate !== null ? amountInEUR * exchangeRate : null;
+    const exchangeRate = await this.getExchangeRate(amountInEUR);
+    return exchangeRate !== null ? (amountInEUR * exchangeRate).toString() : null;
   }
 }

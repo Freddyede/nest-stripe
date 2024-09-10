@@ -5,7 +5,7 @@ import { Stripe } from "stripe";
 interface IProduct {
   name: string;
   default_price_data: {
-    unit_amount: number;
+    unit_amount: any;
     currency: string;
   }
 }
@@ -41,10 +41,11 @@ export class ProductsService extends AbstractStripeService {
         product.default_price_data.unit_amount > 0 &&
         (product.default_price_data.currency !== '' || product.default_price_data.currency !== undefined)
       ) {
+        console.log(await this.convertEURtoUSD(product.default_price_data.unit_amount));
         await this.stripe.products.create({
           name: product.name,
           default_price_data: {
-            unit_amount: await this.convertEURtoUSD(product.default_price_data.unit_amount),
+            unit_amount_decimal: await this.convertEURtoUSD(product.default_price_data.unit_amount),
             currency: product.default_price_data.currency,
             recurring: {
               interval: 'month',
@@ -66,11 +67,11 @@ export class ProductsService extends AbstractStripeService {
       throw new Error('Unable to fetch products from Stripe');
     }
   }
-  async getProductPriceByProductName(productName: string): Promise<string> {
+  async getProductPriceByProductName(productName: string): Promise<any> {
     try {
       console.log(this._products);
       const products = await this.stripe.products.list();
-      return products.data.find(product => product.name === productName).default_price.toString();
+      return products.data.find(product => product.name === productName).default_price;
     } catch (error) {
       console.error('Failed to fetch products from Stripe', error.stack);
       throw new Error('Unable to fetch products from Stripe');
