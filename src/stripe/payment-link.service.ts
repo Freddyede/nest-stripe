@@ -51,11 +51,7 @@ export class PaymentLinkService extends AbstractStripeService {
       throw new Error('Unable to fetch products from Stripe');
     }
   }
-  async addPaymentLinkProduct(product: {name: string, quantity: number}) {
-    let stripeProduct = {
-      price: await this._productService.getProductPriceByProductName(product.name),
-      quantity: product.quantity,
-    };
-    return await this.createPaymentLink(stripeProduct);
+  async addPaymentLinkProduct(product: {price: string, quantity: number}) {
+    return await this.createPaymentLink(product);
   }
 }

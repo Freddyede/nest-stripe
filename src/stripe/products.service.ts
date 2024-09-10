@@ -67,15 +67,4 @@ export class ProductsService extends AbstractStripeService {
       throw new Error('Unable to fetch products from Stripe');
     }
   }
-  async getProductPriceByProductName(productName: string): Promise<any> {
-    try {
-      console.log(this._products);
-      const products = await this.stripe.products.list();
-      return products.data.find(product => product.name === productName).default_price;
-    } catch (error) {
-      console.error('Failed to fetch products from Stripe', error.stack);
-      throw new Error('Unable to fetch products from Stripe');
-    }
-  }
-
 }
