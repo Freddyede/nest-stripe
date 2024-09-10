@@ -12,6 +12,8 @@ export class StripeService {
   }
   async getPaymentLists(): Promise<Stripe.PaymentLink[]> {
     await this.paymentService.productService.createProduct({name: 'my test 4FEZ44Z', default_price_data: {unit_amount: 100, currency: 'usd'}});
+    let products = await this.paymentService.productService.getProducts();
+    console.log(products);
     await this.paymentService.addPaymentLinkProduct({ price: 'price_1PxUXjEp12gOpkuFRGLVe7qo', quantity: 1 });
     return this.paymentService.getPaymentLinkedLists();
   }

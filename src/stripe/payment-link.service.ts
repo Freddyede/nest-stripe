@@ -39,8 +39,9 @@ export class PaymentLinkService extends AbstractStripeService {
         return {
           status: 201,
           message: 'New payment link created successfully',
+          list: this.productService.getProducts()
         };
-      }else {
+      } else {
         return {
           status: 500,
           message: 'Missing field'
