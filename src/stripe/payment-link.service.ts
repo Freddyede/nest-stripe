@@ -24,29 +24,35 @@ export class PaymentLinkService extends AbstractStripeService {
       throw new Error('Unable to fetch products from Stripe');
     }
   }
-  async createPaymentLink(paymentLink: {price: string; quantity: number;}) {
+  private async createPaymentLink(paymentLink: {price: string, quantity: number}) {
+    await this.stripe.paymentLinks.create({
+      line_items: [
+        {
+          price: paymentLink.price,
+          quantity: paymentLink.quantity,
+        },
+      ],
+    });
+  }
+  async tryPaymentLink(paymentLink: {price: string; quantity: number}) {
+    if(paymentLink.price.startsWith('price_')) {
+      await this.createPaymentLink(paymentLink);
+      return {
+        status: 201,
+        message: 'New payment link created successfully',
+        list: this.productService.getProducts()
+      };
+    } else {
+      return {
+        status: 500,
+        message: 'Missing field'
+      }
+    }
+  }
+  async createPaymentLinkRunner(paymentLink: {price: string; quantity: number;}) {
     if(paymentLink.quantity === undefined) paymentLink.quantity = 1;
     try {
-      if(paymentLink.price.startsWith('price_')) {
-        await this.stripe.paymentLinks.create({
-          line_items: [
-            {
-              price: paymentLink.price,
-              quantity: paymentLink.quantity,
-            },
-          ],
-        });
-        return {
-          status: 201,
-          message: 'New payment link created successfully',
-          list: this.productService.getProducts()
-        };
-      } else {
-        return {
-          status: 500,
-          message: 'Missing field'
-        }
-      }
+      await this.tryPaymentLink(paymentLink);
     }catch (error) {
       console.error('Failed to fetch products from Stripe', error.stack);
       throw new Error('Unable to fetch products from Stripe');
