@@ -4,11 +4,11 @@ import 'dotenv/config';
 import { PaymentLinkService } from "./payment-link.service";
 
 /**
- * TODO à la création d'un trajet (MVC <== Code => automation):
- *  - Récupérer tous les (price_id: 'price_1PxUXjEp12gOpkuFRGLVe7qo') des produits stripe
- *  - Y ajoute au paymentList
- *  WARNING: ASYNC DANS ASYNC !!!
+ * TODO Stripe :
+ *  - Attendre le paiement
+ *  - Remboursement du trajet
  */
+
 @Injectable()
 export class StripeService {
   constructor(private paymentService: PaymentLinkService) {}
