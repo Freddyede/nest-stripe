@@ -6,9 +6,7 @@ import { ProductsService } from "./products.service";
 @Injectable()
 export class PaymentLinkService extends AbstractStripeService {
   private _paymentLinks: Stripe.PaymentLink[] = [];
-  constructor(
-    private _productService: ProductsService
-  ) {
+  constructor(private _productService: ProductsService) {
     super();
   }
   get productService(): ProductsService { return this._productService;}

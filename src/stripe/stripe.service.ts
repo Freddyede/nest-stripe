@@ -4,7 +4,7 @@ import 'dotenv/config';
 import { PaymentLinkService } from "./payment-link.service";
 
 /**
- * TODO à la création d'un trajet(automation):
+ * TODO à la création d'un trajet (MVC <== Code => automation):
  *  - Récupérer tous les (price_id: 'price_1PxUXjEp12gOpkuFRGLVe7qo') des produits stripe
  *  - Y ajoute au paymentList
  *  WARNING: ASYNC DANS ASYNC !!!
