@@ -4,18 +4,12 @@ import { StripeProductController } from '../controllers/stripe-product.controlle
 import { PaymentLinkService } from "../services/payment-link.service";
 import { ProductsService } from "../services/products.service";
 import { RemboursementService } from '../services/remboursement.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { JourneysEntity } from '../entity/journeys.entity';
-import JourneysRepository from '../repository/journeys.repository';
 import { StripePaymentLinkController } from '../controllers/stripe-paymentLink.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([JourneysEntity]),
-  ],
-  providers: [ConfigService, PaymentLinkService, ProductsService, RemboursementService, JourneysRepository],
+  providers: [ConfigService, PaymentLinkService, ProductsService, RemboursementService],
   controllers: [StripeProductController, StripePaymentLinkController],
-  exports: [ConfigService, PaymentLinkService, ProductsService, RemboursementService, JourneysRepository],
+  exports: [ConfigService, PaymentLinkService, ProductsService, RemboursementService],
 })
 export class StripeModule {
 
