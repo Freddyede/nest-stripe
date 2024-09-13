@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
-import { ApiConfig } from '../config/api';
+import { ApiConfig } from '../../config/api';
 
 @Injectable()
 export abstract class AbstractStripeService {
