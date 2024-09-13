@@ -9,7 +9,7 @@
 export interface IProductNameService {
   initProduct(product: IProductDatabase): void;
   get stripeProductName(): IProduct;
-  runner(): void;
+  runner(product: IProductDatabase): void;
 
 }
 
@@ -47,10 +47,10 @@ export interface IRefundType {
  * Interface for stripe product
  */
 export interface IProduct {
-  name: string;
+  name: string; // owner + located_at + located_from ('owner-locatedAt_locatedFrom')
   default_price_data: {
-    unit_amount: any;
-    currency: string;
+    unit_amount: any; // price IProductDatabase
+    currency: string; // 'usd'
   }
 }
 
